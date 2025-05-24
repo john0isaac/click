@@ -17,9 +17,8 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request;
-            const sender = pr.user;
-            const orgType = 'Organization';
-            if (sender.type === orgType) {
+            const forkOwnerType = pr.head.repo.owner.type;
+            if (forkOwnerType === 'Organization') {
               // Add 'invalid' label
               await github.issues.addLabels({
                 owner: context.repo.owner,
