@@ -20,28 +20,28 @@ jobs:
             const forkOwnerType = pr.head.repo.owner.type;
             if (forkOwnerType === 'Organization') {
               // Add 'invalid' label
-              await github.issues.addLabels({
+              await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: pr.number,
-                labels: ['wontfix']
+                labels: ['invalid']
               });
               // Close the PR
-              await github.pulls.update({
+              await github.rest.pulls.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: pr.number,
                 state: 'closed'
               });
               // Leave a comment
-              await github.issues.createComment({
+              await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: pr.number,
                 body: "We don't allow pull requests from organization accounts. This PR has been closed."
               });
               // Lock the conversation
-              await github.issues.lock({
+              await github.rest.issues.lock({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: pr.number,
